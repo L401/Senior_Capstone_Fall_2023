@@ -16,9 +16,8 @@ def read_files(folder_path):
 
     return file_data
 
-folder_path = '/home/l401/Senior_Capstone_Fall_2023/db'
+folder_path = 'db'
 file_data = read_files(folder_path)
-
 
 documents = []
 metadatas = []
