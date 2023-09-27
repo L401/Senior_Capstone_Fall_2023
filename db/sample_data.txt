@@ -1,0 +1,13 @@
+CODE DEFINITION
+S No repair. Identifies items which are not repairable or are considered uneconomical to repair. These parts
+will be disposed of at user level upon failure.
+B Recondition. No repair authorized. Assigned to items to be reconditioned at user level by adjusting,
+cleaning, welding, straightening, etc. No repair parts or tools are procured for maintenance support. Re-
+conditioning will be achieved by using common bench stock parts, materials, standard tools, and shop
+equipment. If beyond restoration by these means, items will be condemned and disposed of at user level.
+F Intermediate Repair. Identifies items to be repaired at the intermediate level of maintenance. Selected
+parts, tools, technical data, and test equipment are provided for repair support. If the item cannot be re-
+paired with authorized parts and tools, it will be disposed of as condemned material. If repair cannot be
+accomplished due to the absence of parts, tools, etc., disposition instructions will be requested from the
+responsible IM. Critical and potentially critical items will be returned to base supply for disposition as
+directed by the IM. (NOTE: No TRC is established for “F” coded items.)
