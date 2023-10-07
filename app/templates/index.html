@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lockheed Martin Semantic Search Tool</title>
+    <style>
+        body {
+            background-color: #ccc; /* Muted gray background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        #image {
+            width: 100px; /* Adjust the width as needed */
+            height: auto;
+            margin-left: 50px; /* Add margin to position it from the left */
+        }
+
+        #textbox-container {
+            background: rgba(255, 255, 255, 0.7); /* Transparent white background */
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #text-input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            outline: none;
+            background: transparent;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <img id="image" src="{{ url_for('static', filename='images/bert.png') }}" alt="Image">
+        <div id="textbox-container">
+            <input type="text" id="text-input" placeholder="Lockheed is cool!...">
+        </div>
+</body>
+</html>
