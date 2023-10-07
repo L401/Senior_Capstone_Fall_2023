@@ -11,3 +11,9 @@ cp cased_L-12_H-768_A-12 bert/model
 ```bash
 docker compose up --build
 ```
+
+Final Version still in production
+
+TODO:
+
+10/11 Final draft of product to be showcased then uploaded to github
