@@ -286,16 +286,37 @@ def save_to_json(data):
         json.dump(data, f, indent=4)
 
 
+# Function saves the extracted data to a .txt file.
+def save_to_txt(text_per_page):
+    # Open a file named 'output.txt' in write mode.
+    with open("./data/extracted_data.txt", "w", encoding="utf-8") as f:
+        for page_num, content in text_per_page.items():
+            f.write(
+                "Page " + str(page_num) + "\n"
+            )  # Writing the page number to the file
+            result = "".join(content[4])  # Getting the content of the page
+            f.write(result + "\n")
+            f.write("-" * 50 + "\n")  # separator line between pages
+
+
+# Function prints the extracted data to the console.
+def print_to_console(text_per_page):
+    # Iterating through each page in the dictionary
+    for page_num, content in text_per_page.items():
+        print(page_num)  # Printing the page number
+        result = "".join(content[4])  # Displaying the content of the page
+        print(result)
+        print("-" * 50)  # separator line between pages
+
+
 # Run to process the PDF
 process_pdf_data(text_per_page)
+
 # Run to and save the data to json
 save_to_json(data)
 
+# Run to and save the data to txt
+save_to_txt(text_per_page)
 
-# # Run to print to console
-# # Iterating through each page in the dictionary
-# for page_num, content in text_per_page.items():
-#     print(page_num) # Printing the page number
-#     result = ''.join(content[4]) # Displaying the content of the page
-#     print(result)
-#     print("-" * 50)  # separator line between pages
+# Run to print to console
+print_to_console(text_per_page)
