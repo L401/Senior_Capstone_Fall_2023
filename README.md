@@ -14,6 +14,8 @@ Running the application with Docker:
 docker compose up --build
 ```
 
+PDF PARSER:
+
 Install Python Dependencies:
 Before running the application, make sure you've installed the required Python packages. If you haven't already, set up a virtual environment for better isolation:
 
@@ -22,11 +24,18 @@ python -m venv venv
 source venv/bin/activate   # On Windows, use: venv\Scripts\activate
 ```
 
-Now, install the required packages using the pdfparser_requirements.txt file:
+Next, install the required packages using the pdfparser_requirements.txt file:
 
 ```bash
 pip install -r pdfparser_requirements.txt
 ```
+
+Install Tesseract (Optical character recognition):
+Follow the tutorial here: https://linuxhint.com/install-tesseract-windows/
+
+Which has a link for the download at: https://github.com/UB-Mannheim/tesseract/wiki
+
+This allows the PDF Parser to extract the text from the images using OCR technology
 
 Current Status
 Final Version still in production.
