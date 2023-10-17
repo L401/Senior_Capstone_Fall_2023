@@ -9,3 +9,4 @@ WORKDIR /bert
 RUN chmod +x bert_start.sh
 
 ENTRYPOINT ["./bert_start.sh"]
+

@@ -8,12 +8,25 @@ unzip cased_L-12_H-768_A-12.zip
 cp cased_L-12_H-768_A-12 bert/model
 ```
 
+Running the application with Docker:
+
 ```bash
 docker compose up --build
 ```
 
-Final Version still in production
+Install Python Dependencies:
+Before running the application, make sure you've installed the required Python packages. If you haven't already, set up a virtual environment for better isolation:
 
-TODO:
+```bash
+python -m venv venv
+source venv/bin/activate   # On Windows, use: venv\Scripts\activate
+```
 
-10/11 Final draft of product to be showcased then uploaded to github
+Now, install the required packages using the pdfparser_requirements.txt file:
+
+```bash
+pip install -r pdfparser_requirements.txt
+```
+
+Current Status
+Final Version still in production.
