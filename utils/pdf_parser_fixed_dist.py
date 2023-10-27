@@ -25,6 +25,20 @@ Date: 10/26/23
 Version: 1.0
 """
 
+# TODO
+"""
+Add condition that splits line of text if Helvetic followed by Times-Roman
+
+Line Formats: [('Helvetica', 9.98), ('Times-Roman', 9.98)]
+Line Text: 
+
+Subheading||content
+3.11.4.2 Ineligible Updates. |SPLIT HERE|  RCs identifying errors in TOs or procedures prior to formalization, i.e., wrong screws,
+erroneous measurements, incorrect references, typographical errors, etc., are ineligible for the API program. Corrections of
+this type are an integral part of the TO development process.
+
+"""
+
 import PyPDF2
 from pdfminer.high_level import extract_pages
 from pdfminer.layout import LTTextContainer, LTChar, LTFigure
@@ -157,43 +171,6 @@ def calculate_mean_and_std_dev(font_data):
     print(f"[DEBUG] IQR: {iqr}")
 
     return q50, iqr  # Return median and IQR
-
-
-# def categorize_text_based_on_dist(line_text, format_per_line, mean_size, std_dev):
-#     global heading_count, subheading_count, content_count
-#     # Default category for text
-#     category = "content"
-
-#     # Retrieve the font size of the text
-#     if format_per_line:
-#         current_size = format_per_line[0][1]
-#         print(f"[DEBUG] Current font size: {current_size}")
-
-#         # Categorize the text based on deviation from mean size
-#         if current_size > (mean_size + 2 * std_dev):
-#             category = "heading"
-#             heading_count += 1
-#         elif current_size > (mean_size + 1 * std_dev):
-#             category = "subheading"
-#             subheading_count += 1
-#         else:
-#             content_count += 1
-
-#     print(f"[DEBUG] Predicted category: {category}")
-#     return {category: line_text}
-
-
-# def calculate_mean_and_std_dev(font_data):
-#     print("[INFO] Calculating mean and standard deviation of font sizes...")
-
-#     font_sizes = [data[1] for data in font_data]
-#     mean_size = np.mean(font_sizes)
-#     std_dev = np.std(font_sizes)
-
-#     print(f"[DEBUG] Mean font size: {mean_size}")
-#     print(f"[DEBUG] Standard deviation: {std_dev}")
-
-#     return mean_size, std_dev
 
 
 ##############################
