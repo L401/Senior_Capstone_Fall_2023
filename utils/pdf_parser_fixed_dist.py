@@ -46,6 +46,10 @@ print("[INFO] Initializing...")
 print(f"[INFO] Using Tesseract at {TESSERACT_PATH}")
 print(f"[INFO] Processing PDF from {PDF_PATH}")
 
+heading_count = 0
+subheading_count = 0
+content_count = 0
+
 
 # Set Tesseract command and open PDF with pdfplumber
 def initialize_pdf(PDF_PATH):
@@ -104,6 +108,7 @@ def gather_all_font_data(PDF_PATH):
 
 
 def categorize_text_based_on_dist(line_text, format_per_line, mean_size, std_dev):
+    global heading_count, subheading_count, content_count
     # Default category for text
     category = "content"
 
@@ -113,26 +118,77 @@ def categorize_text_based_on_dist(line_text, format_per_line, mean_size, std_dev
         print(f"[DEBUG] Current font size: {current_size}")
 
         # Categorize the text based on deviation from mean size
-        if current_size > mean_size + 1.5 * std_dev:
+        if current_size > (mean_size + 1.5 * std_dev):
             category = "heading"
-        elif current_size > mean_size + 0.5 * std_dev:
+            heading_count += 1
+        elif mean_size + 0.5 * std_dev < current_size <= (mean_size + 1.5 * std_dev):
             category = "subheading"
+            subheading_count += 1
+        else:
+            content_count += 1
 
     print(f"[DEBUG] Predicted category: {category}")
     return {category: line_text}
 
 
 def calculate_mean_and_std_dev(font_data):
-    print("[INFO] Calculating mean and standard deviation of font sizes...")
+    print("[INFO] Calculating font metrics...")
 
     font_sizes = [data[1] for data in font_data]
+
+    # Mean and standard deviation
     mean_size = np.mean(font_sizes)
     std_dev = np.std(font_sizes)
 
+    # Median and IQR
+    q25 = np.percentile(font_sizes, 25)
+    q50 = np.percentile(font_sizes, 50)
+    q75 = np.percentile(font_sizes, 75)
+    iqr = q75 - q25
+
     print(f"[DEBUG] Mean font size: {mean_size}")
     print(f"[DEBUG] Standard deviation: {std_dev}")
+    print(f"[DEBUG] Median font size: {q50}")
+    print(f"[DEBUG] IQR: {iqr}")
 
-    return mean_size, std_dev
+    return q50, iqr  # Return median and IQR
+
+
+# def categorize_text_based_on_dist(line_text, format_per_line, mean_size, std_dev):
+#     global heading_count, subheading_count, content_count
+#     # Default category for text
+#     category = "content"
+
+#     # Retrieve the font size of the text
+#     if format_per_line:
+#         current_size = format_per_line[0][1]
+#         print(f"[DEBUG] Current font size: {current_size}")
+
+#         # Categorize the text based on deviation from mean size
+#         if current_size > (mean_size + 2 * std_dev):
+#             category = "heading"
+#             heading_count += 1
+#         elif current_size > (mean_size + 1 * std_dev):
+#             category = "subheading"
+#             subheading_count += 1
+#         else:
+#             content_count += 1
+
+#     print(f"[DEBUG] Predicted category: {category}")
+#     return {category: line_text}
+
+
+# def calculate_mean_and_std_dev(font_data):
+#     print("[INFO] Calculating mean and standard deviation of font sizes...")
+
+#     font_sizes = [data[1] for data in font_data]
+#     mean_size = np.mean(font_sizes)
+#     std_dev = np.std(font_sizes)
+
+#     print(f"[DEBUG] Mean font size: {mean_size}")
+#     print(f"[DEBUG] Standard deviation: {std_dev}")
+
+#     return mean_size, std_dev
 
 
 ##############################
@@ -361,6 +417,9 @@ def main():
         print("[DEBUG] Saving processed data to JSON...")
         save_data_to_json(processed_data)
         pdf.close()
+        print(f"[INFO] Total Headings: {heading_count}")
+        print(f"[INFO] Total Subheadings: {subheading_count}")
+        print(f"[INFO] Total Content Predictions: {content_count}")
         print("[INFO] Completed!")
 
 
