@@ -105,6 +105,7 @@ def gather_all_font_data(PDF_PATH):
 
 
 ##############################
+#   SIMPLE STAT STRATEGY
 
 
 def categorize_text_based_on_dist(line_text, format_per_line, mean_size, std_dev):
@@ -117,13 +118,16 @@ def categorize_text_based_on_dist(line_text, format_per_line, mean_size, std_dev
         current_size = format_per_line[0][1]
         print(f"[DEBUG] Current font size: {current_size}")
 
-        # Categorize the text based on deviation from mean size
-        if current_size > (mean_size + 1.5 * std_dev):
+        # Determine the category based on deviation from mean font size
+        # If the current font size is much larger than the average, classify as a heading
+        if current_size > (mean_size + 1 * std_dev):
             category = "heading"
             heading_count += 1
-        elif mean_size + 0.5 * std_dev < current_size <= (mean_size + 1.5 * std_dev):
+        # If the font size is somewhat larger than the average but not as large as a heading, classify as a subheading
+        elif mean_size + 0.25 * std_dev < current_size <= (mean_size + 1 * std_dev):
             category = "subheading"
             subheading_count += 1
+        # Otherwise, categorize as content
         else:
             content_count += 1
 
@@ -134,6 +138,7 @@ def categorize_text_based_on_dist(line_text, format_per_line, mean_size, std_dev
 def calculate_mean_and_std_dev(font_data):
     print("[INFO] Calculating font metrics...")
 
+    # Extract all font sizes from the given data
     font_sizes = [data[1] for data in font_data]
 
     # Mean and standard deviation
