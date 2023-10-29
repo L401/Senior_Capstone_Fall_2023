@@ -377,11 +377,15 @@ def main():
         font_data = gather_all_font_data(PDF_PATH)
         print("[DEBUG] Calculating mean and standard deviation of font sizes...")
         mean_size, std_dev = calculate_mean_and_std_dev(font_data)
+
+        # Loop through all the pages of the PDF
         for pagenum, page in enumerate(extract_pages(PDF_PATH)):
             print(f"[DEBUG] Processing page number {pagenum + 1}...")
+            # Process the content of the current page
             page_content = process_page(
                 page, pdfReader, pdf, pagenum, mean_size, std_dev
             )
+            # Store the processed content into the text_per_page dictionary
             text_per_page[f"Page_{pagenum}"] = page_content
         print("[DEBUG] Cleaning up temporary files...")
         try:
