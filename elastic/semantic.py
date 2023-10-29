@@ -1,5 +1,8 @@
 from bert_serving.client import BertClient
 from elasticsearch import Elasticsearch, helpers
+from flask import Flask
+
+app = Flask(__name__)
 
 # Initialize BERT client
 bc = BertClient()
@@ -40,6 +43,7 @@ def index_data(data):
         actions.append(action)
     helpers.bulk(es, actions)
 
+@app.route('/api/elastic_search')
 def semantic_search(query, size=4):
     """
     Perform semantic search.

@@ -43,36 +43,46 @@
             inqueryUSER.textContent = userMessage;
             chatHistory.appendChild(inqueryUSER);
 
-            var responseBERT = document.createElement('div');
-            responseBERT.className = 'reponse bert';
-            responseBERT.textContent = 'In the assembly process of the F-22 Raptor, bolt B-5 plays a critical role in securing the advanced avionics bay cover. Located just aft of the cockpit, bolt B-5 ensures that the avionics bay cover is securely fastened, protecting sensitive electronic components from external elements and vibrations during flight.';
-
-            var ratingButtons = document.createElement('div');
-            ratingButtons.className = 'rating-buttons';
-
-            var goodButton = document.createElement('button');
-            goodButton.textContent = 'Good';
-            goodButton.className = 'good-button';
-            goodButton.onclick = function () {
-                console.log('good');
-            };
-
-            var badButton = document.createElement('button');
-            badButton.textContent = 'Bad';
-            badButton.className = 'bad-button';
-            badButton.onclick = function () {
-                console.log('bad');
-            };
-
-            ratingButtons.appendChild(goodButton);
-            ratingButtons.appendChild(badButton);
-
-            chatHistory.appendChild(responseBERT);
-            console.log("bert")
-            chatHistory.appendChild(ratingButtons);
-            console.log("buttons")
-
-            document.getElementById('user-input').value = '';
+            fetch('/api/elastic_search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ user_input: userMessage })
+            })
+            .then(response => response.text())
+            .then(data => {
+                var responseBERT = document.createElement('div');
+                responseBERT.className = 'response bert';
+                responseBERT.textContent = data;
+    
+                var ratingButtons = document.createElement('div');
+                ratingButtons.className = 'rating-buttons';
+    
+                var goodButton = document.createElement('button');
+                goodButton.textContent = 'Good';
+                goodButton.className = 'good-button';
+                goodButton.onclick = function () {
+                    console.log('good');
+                };
+    
+                var badButton = document.createElement('button');
+                badButton.textContent = 'Bad';
+                badButton.className = 'bad-button';
+                badButton.onclick = function () {
+                    console.log('bad');
+                };
+    
+                ratingButtons.appendChild(goodButton);
+                ratingButtons.appendChild(badButton);
+    
+                chatHistory.appendChild(responseBERT);
+                console.log("bert")
+                chatHistory.appendChild(ratingButtons);
+                console.log("buttons")
+    
+                document.getElementById('user-input').value = '';
+            });
         }
 
         document.getElementById('user-input').addEventListener('keydown', function(event) {
