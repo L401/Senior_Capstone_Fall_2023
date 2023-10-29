@@ -1,0 +1,169 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.navbar {
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    width: 100%;
+}
+
+.navbar button {
+    border: none;
+    background-color: white;
+    text-align: center;
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 18px;
+    margin: 0 20px;
+}
+
+.main {
+    display: flex;
+    flex-direction: row;
+}
+
+.prev-chat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+.new-chat-button {
+    background-color: #0074d9;
+    color: #fff;
+    padding: 10px 79px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 20px;
+    align-self: flex-start;
+}
+
+.chatbot {
+    margin-left: auto;
+    padding: 20px;
+    border: 1px solid black;
+    border-top: none;
+    height: 40vw;
+    width: 85vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.chat-history {
+    overflow-y: auto;
+    max-height: 80rem;
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 90%;
+    height: 90%;
+}
+
+.inquery.user {
+    text-align: center;
+    background-color: #0360ae;
+    color: white;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 40%;
+    min-height: 10%;
+    margin-left: auto;
+}
+
+.reponse.bert {
+    text-align: center;
+    background-color: #d9d9d9;
+    color: black;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 40%;
+    min-height: 10%;
+    margin-right: auto;
+}
+
+.good-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.bad-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.good-button:hover, .bad-button:hover {
+    opacity: 0.8;
+}
+
+.message.chatbot {
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    width: 40%;
+    align-self: flex-end;
+}
+
+.message-input {
+    background-color: grey;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 80%;
+    height: 15%;
+    padding: 10px;
+}
+
+.message-input input {
+    border: none;
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    font-size: 16px;
+    color: white;
+    padding: 0;
+    outline: none;
+}
+
+.message-input input::placeholder {
+    color: white;
+    opacity: 0.6;
+}
+
+.message-input button {
+    color: black;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.LM-logo {
+    height: 30px;
+}
