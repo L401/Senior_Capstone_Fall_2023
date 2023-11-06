@@ -1,13 +1,8 @@
 from bert_serving.client import BertClient
 from elasticsearch import Elasticsearch, helpers
 
-from flask import Flask
-
-app = Flask(__name__)
-
 import json
 import hashlib
-
 
 # Initialize BERT client
 try:
@@ -45,7 +40,13 @@ except Exception as e:
 def load_data(filepath):
     with open(filepath, 'r') as file:
         data = json.load(file)
-        return [item["subheader"] for item in data if item["subheader"].strip()]
+        texts = []
+        for item in data:
+            subheaders = item.get("subheader", {})
+            for subheader_title, subheader_content in subheaders.items():
+                if isinstance(subheader_content, str) and subheader_content.strip():
+                    texts.append(subheader_content)
+        return texts
 
 def index_data(data):
     try:
@@ -53,8 +54,28 @@ def index_data(data):
         for text in data:
             # Create a hash of the text content
             doc_id = hashlib.sha256(text.encode()).hexdigest()
+            # Check if the document already exists
+            if not es.exists(index=INDEX_NAME, id=doc_id):
+                # Generate embedding only if the document does not exist
+                embedding = bc.encode([text])[0].tolist()
+                action = {
+                    "_index": INDEX_NAME,
+                    "_id": doc_id,  # Set the document ID
+                    "_source": {
+                        "text": text,
+                        "embedding": embedding
+                    }
+                }
+                actions.append(action)
+        if actions:
+            helpers.bulk(es, actions)
+            es.indices.refresh(index=INDEX_NAME)
+            print("Data indexed/updated successfully.")
+        else:
+            print("No data to index or data already indexed.")
+    except Exception as e:
+        print("Error indexing data:", str(e))
 
-@app.route('/api/elastic_search')
 def semantic_search(query, size=5):
     try:
         embedding = bc.encode([query])[0].tolist()
@@ -85,6 +106,6 @@ data = load_data('../data/extracted_data.json')
 index_data(data)
 
 # Sample search
-query = "What is TODPG?"
+query = "What is the TOMA’s role?"
 results = semantic_search(query)
 print("Search results:", results)
