@@ -1,50 +1,96 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Lockheed Martin Semantic Search Tool</title>
-    <style>
-        body {
-            background-color: #ccc; /* Muted gray background */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        #container {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        #image {
-            width: 100px; /* Adjust the width as needed */
-            height: auto;
-            margin-left: 50px; /* Add margin to position it from the left */
-        }
-
-        #textbox-container {
-            background: rgba(255, 255, 255, 0.7); /* Transparent white background */
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-
-        #text-input {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            outline: none;
-            background: transparent;
-        }
-    </style>
-</head>
-<body>
-    <div id="container">
-        <img id="image" src="{{ url_for('static', filename='images/bert.png') }}" alt="Image">
-        <div id="textbox-container">
-            <input type="text" id="text-input" placeholder="Lockheed is cool!...">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Application</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+  </head>
+  <body>
+    <nav>
+        <div class="navbar">
+            <img id="lockheed-martin-logo" class="LM-logo" src="{{ url_for('static', filename='images/LM-logo.png')}}">
+            <button class="nav-button">Section</button>
+            <button class="nav-button">Import</button>
+            <button class="nav-button">Profile</button>
         </div>
+    </nav>
+
+    <main class="main">
+        <div class="prev-chat">
+            <button class="new-chat-button">New Chat</button>
+        </div>
+        <div class="chatbot">
+            <div class="chat-history" id="chat-history">
+                <!-- Previous chat messages will go here -->
+            </div>
+            <div class="message-input">
+                <input id="user-input" type="text" placeholder="Type your message..." class="input-field">
+                <button onclick="sendMessage()" class="send-button">Send</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function sendMessage() {
+            var userMessage = document.getElementById('user-input').value;
+            if (userMessage.trim() === '') return;
+
+            var chatHistory = document.getElementById('chat-history');
+            var inqueryUSER = document.createElement('div');
+            inqueryUSER.className = 'inquery user';
+            inqueryUSER.textContent = userMessage;
+            chatHistory.appendChild(inqueryUSER);
+
+            fetch('/api/elastic_search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ user_input: userMessage })
+            })
+            .then(response => response.text())
+            .then(data => {
+                var responseBERT = document.createElement('div');
+                responseBERT.className = 'response bert';
+                responseBERT.textContent = data;
+    
+                var ratingButtons = document.createElement('div');
+                ratingButtons.className = 'rating-buttons';
+    
+                var goodButton = document.createElement('button');
+                goodButton.textContent = 'Good';
+                goodButton.className = 'good-button';
+                goodButton.onclick = function () {
+                    console.log('good');
+                };
+    
+                var badButton = document.createElement('button');
+                badButton.textContent = 'Bad';
+                badButton.className = 'bad-button';
+                badButton.onclick = function () {
+                    console.log('bad');
+                };
+    
+                ratingButtons.appendChild(goodButton);
+                ratingButtons.appendChild(badButton);
+    
+                chatHistory.appendChild(responseBERT);
+                console.log("bert")
+                chatHistory.appendChild(ratingButtons);
+                console.log("buttons")
+    
+                document.getElementById('user-input').value = '';
+            });
+        }
+
+        document.getElementById('user-input').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
 </body>
 </html>
+
