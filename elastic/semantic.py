@@ -52,9 +52,9 @@ def index_data(data):
     try:
         actions = []
         for text in data:
-            # Create a hash of the text content
+            # Create a hash of the text content to recognize if it was previously indexed
             doc_id = hashlib.sha256(text.encode()).hexdigest()
-            # Check if the document already exists
+            # Check if the document already exists by cross referencing with hash
             if not es.exists(index=INDEX_NAME, id=doc_id):
                 # Generate embedding only if the document does not exist
                 embedding = bc.encode([text])[0].tolist()
@@ -68,6 +68,7 @@ def index_data(data):
                 }
                 actions.append(action)
         if actions:
+            #helps to bulk process actions that are stored in the actions "queue"
             helpers.bulk(es, actions)
             es.indices.refresh(index=INDEX_NAME)
             print("Data indexed/updated successfully.")
