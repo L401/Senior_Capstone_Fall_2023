@@ -74,7 +74,7 @@ body {
 }
 
 .inquery.user {
-    text-align: center;
+    text-align: left;
     background-color: #0360ae;
     color: white;
     border-radius: 5px;
@@ -86,7 +86,7 @@ body {
 }
 
 .response.bert {
-    text-align: center;
+    text-align: left;
     background-color: #d9d9d9;
     color: black;
     border-radius: 5px;
