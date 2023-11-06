@@ -1,2 +1,4 @@
 Flask>=3.0.0
 ElasticSearch>=7.17.9
+bert-serving-client
+bert-serving-server

@@ -1,28 +1,40 @@
-from bert_serving.client import BertClient
-from elasticsearch import Elasticsearch, helpers
-
-#from flask import Flask
-
-#app = Flask(__name__)
-
 import json
 import hashlib
+import sys
+from bert_serving.client import BertClient
+from elasticsearch import Elasticsearch, helpers
+from flask import Blueprint, request, jsonify
+from time import sleep
 
-# Initialize BERT client
-try:
-    bc = BertClient(check_length=False)
-    print("BERT client initialized successfully.")
-except Exception as e:
-    print("Error initializing BERT client:", str(e))
+semantic = Blueprint("semantic", __name__)
+
+max_retries = 5
+wait_seconds = 5
+
+for attempt in range(max_retries):
+    try:
+        # Attempt to connect to the BERT server
+        bc = BertClient(check_length=False, ip="bert", timeout=2000, port=5555, port_out=5556)
+        print("Connected to BERT server.")
+        break
+    except Exception as e:
+        print(f"Connection attempt {attempt + 1}/{max_retries} failed: {e}")
+        if attempt < max_retries - 1:
+            print(f"Retrying in {wait_seconds} seconds...")
+            sleep(wait_seconds)
+        else:
+            print("Could not connect to the BERT server after several retries.")
+            sys.exit(1)
 
 # Initialize Elasticsearch client
 try:
-    es = Elasticsearch(hosts=["http://localhost:9200"])
+    es = Elasticsearch(hosts=["http://elasticsearch:9200"])
     print("Elasticsearch client initialized successfully.")
 except Exception as e:
     print("Error initializing Elasticsearch client:", str(e))
 
 INDEX_NAME = "semantic_search"
+
 
 # Ensure the index exists
 try:
@@ -81,9 +93,12 @@ def index_data(data):
     except Exception as e:
         print("Error indexing data:", str(e))
 
-#@app.route('/api/elastic_search')
-def semantic_search(query, size=5):
+@semantic.route('/api/elastic_search', methods=["POST"])
+def semantic_search():
     try:
+        data = request.get_json()
+        query = data.get("user_input")
+        size = data.get("size", 5)
         embedding = bc.encode([query])[0].tolist()
         script_query = {
             "script_score": {
@@ -103,15 +118,10 @@ def semantic_search(query, size=5):
         return [hit["_source"]["text"] for hit in response["hits"]["hits"]]
     except Exception as e:
         print("Error executing search:", str(e))
-        return []
+        return jsonify({"error": str(e)})
 
 # Load data from file
-data = load_data('../data/extracted_data.json')
+data = load_data('./data/extracted_data.json')
 
 # Index data
 index_data(data)
-
-# Sample search
-query = "What is the TOMA’s role?"
-results = semantic_search(query)
-print("Search results:", results)
