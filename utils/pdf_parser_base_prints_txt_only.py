@@ -1,44 +1,31 @@
 """
-PDF Content Extractor and Analyzer, Simple Stat variation
+PDF Content Extractor and Analyzer, 
 
 Description:
-This script is designed to extract and categorize various content types from a PDF document including 
-text (categorized into headings, subheadings, and general content), images, and tables. The categorization 
-of text is achieved by analyzing the distribution of font sizes across the document and categorizing based 
-on deviation from the mean font size.
+This script provides an simnple rule based solution for extracting various content types from a PDF document. It can:
+- Extract and categorize text based on font details and it's order. 
+- Extract images from the PDF and recognize text using the Tesseract OCR engine.
+- Extract tables in a structured format.
+
+The results are saved in a structured .txt format and is viewed in plain text file.
 
 Features:
-1. Text extraction and categorization based on a simple, fixed font size distribution.
+1. Text extraction based on detailed font properties.
 2. Image extraction and Optical Character Recognition (OCR) using Tesseract.
 3. Table extraction in a structured format.
 
 Usage:
-Ensure the Tesseract OCR engine is installed and the path (`TESSERACT_PATH`) is correctly set. 
-Specify the target PDF file path (`PDF_PATH`) and run the script.
+1. Ensure the Tesseract OCR engine is installed and the path (`TESSERACT_PATH`) is correctly set.
+2. Specify the target PDF file path (`PDF_PATH`).
+3. Run the script to process the PDF and save the extracted data in a JSON format.
 
 Note:
-- Extracted images and other temporary files are cleaned up post-processing.
-- Results are saved in a JSON format.
+- Temporary files generated during processing (e.g., cropped images) are automatically deleted post-processing.
 
 Author: Zachary Knapp
-Date: 10/26/23
-Version: 1.0
+Date: 11/2/23
+Version: 2.0
 """
-
-# TODO
-"""
-Add condition that splits line of text if Helvetic followed by Times-Roman
-
-Line Formats: [('Helvetica', 9.98), ('Times-Roman', 9.98)]
-Line Text: 
-
-Subheading||content
-3.11.4.2 Ineligible Updates. |SPLIT HERE|  RCs identifying errors in TOs or procedures prior to formalization, i.e., wrong screws,
-erroneous measurements, incorrect references, typographical errors, etc., are ineligible for the API program. Corrections of
-this type are an integral part of the TO development process.
-
-"""
-
 import PyPDF2
 from pdfminer.high_level import extract_pages
 from pdfminer.layout import LTTextContainer, LTChar, LTFigure
@@ -72,35 +59,67 @@ def initialize_pdf(PDF_PATH):
 
 
 # Clear the content of the extracted data file
-with open(r"extracted_data.txt", "w") as file:
+with open(r"extracted_data_debuging.txt", "w") as file:
     pass
+
+
+def normalize_fontname(fontname):
+    if fontname == "Times-Italic":
+        return "Times-Roman"
+    return fontname
 
 
 # Extract text and associated font details from an element
 def extract_text(element):
-    line_text = element.get_text()
-    line_formats = []
+    word_formats = []
+    formatted_text = {}
+    last_font_detail = None
+    current_text = ""
 
     for text_line in element:
         if isinstance(text_line, LTTextContainer):
+            words = text_line.get_text().split()
+
+            # Process words instead of characters
+            word_index = 0
             for character in text_line:
                 if isinstance(character, LTChar):
+                    # Extract font details for the first character of each word
                     font_detail = (
-                        character.fontname,
+                        normalize_fontname(character.fontname),
                         round(float(character.size), 2),
-                    )  # Rounded to 2 decimal places
-                    if font_detail not in line_formats:
-                        line_formats.append(font_detail)
+                    )
+                    if word_index < len(words):
+                        word = words[word_index]
+                        if (
+                            character.get_text() == word[0]
+                        ):  # Ensure we are at the start of a word
+                            if font_detail != last_font_detail:
+                                if last_font_detail is not None:
+                                    formatted_text[
+                                        last_font_detail
+                                    ] = current_text.strip()
+                                last_font_detail = font_detail
+                                current_text = ""
+                                if font_detail not in word_formats:
+                                    word_formats.append(font_detail)
+                            current_text += word + " "
+                            word_index += 1
+
+    # Store the text of the last font detail
+    if last_font_detail is not None:
+        formatted_text[last_font_detail] = current_text.strip()
 
     with open(
-        r"extracted_data.txt",
+        r"./data/extracted_data_debuging.txt",
         "a",
         encoding="utf-8",
     ) as file:
-        file.write(f"Line Formats: {line_formats}\n")
-        file.write(f"Line Text: {line_text}\n\n")
+        file.write(f"\nWord Formats: {word_formats}\n")
+        for font_detail, text in formatted_text.items():
+            file.write(f"Font Detail: {font_detail}\nText: {text}\n")
 
-    return line_text, line_formats
+    return formatted_text, word_formats
 
 
 # Gather all font data from the PDF
@@ -358,7 +377,7 @@ def structure_pdf_data(text_per_page):
 
 
 # Save structured data to a JSON file
-def save_data_to_json(data, path="./data/extracted_data.json"):
+def save_data_to_json(data, path="./data/extracted_data_debugging.json"):
     print(f"[INFO] Saving extracted data to JSON file")
     with open(path, "w") as f:
         json.dump(data, f, indent=4)
