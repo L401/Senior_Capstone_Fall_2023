@@ -96,7 +96,7 @@ def semantic_search(query, size=5):
         return []
 
 # Load data from file
-data = load_data('../data/extracted_datas_new.json')
+data = load_data('../data/extracted_data.json')
 
 # Index data
 index_data(data)
