@@ -1,6 +1,10 @@
 from bert_serving.client import BertClient
 from elasticsearch import Elasticsearch, helpers
 
+#from flask import Flask
+
+#app = Flask(__name__)
+
 import json
 import hashlib
 
@@ -77,6 +81,7 @@ def index_data(data):
     except Exception as e:
         print("Error indexing data:", str(e))
 
+#@app.route('/api/elastic_search')
 def semantic_search(query, size=5):
     try:
         embedding = bc.encode([query])[0].tolist()

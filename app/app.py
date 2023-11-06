@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 from elasticsearch import Elasticsearch
+#from elastic.semantic import semantic_search
 
 SEARCH_SIZE = 5
 
@@ -11,6 +12,7 @@ def index():
 
 @app.route('/api/elastic_search')
 def call_elastic_search():
+    #result = semantic_search
     return 0
 
 if __name__ == "__main__":
