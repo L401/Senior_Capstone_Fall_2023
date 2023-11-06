@@ -29,7 +29,7 @@ Next, install the required packages using the pdfparser_requirements.txt file:
 ```bash
 pip install -r pdfparser_requirements.txt
 ```
-hi
+
 Install Tesseract (Optical character recognition):
 Follow the tutorial here: https://linuxhint.com/install-tesseract-windows/
 
