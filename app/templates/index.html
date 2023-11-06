@@ -54,7 +54,7 @@
             .then(data => {
                 const textDecoder = new TextDecoder('utf-8');
                 const dataString = textDecoder.decode(data);
-                const dataArray = dataString.split(',');
+                const dataArray = dataString.split('"');
 
                 var responseBERT = document.createElement('div');
                 responseBERT.className = 'response bert';
