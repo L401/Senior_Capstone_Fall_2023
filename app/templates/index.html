@@ -50,17 +50,18 @@
                 },
                 body: JSON.stringify({ user_input: userMessage })
             })
-            .then(response => response.arrayBuffer())
+            .then(response => response.json())
             .then(data => {
-                const textDecoder = new TextDecoder('utf-8');
-                const dataString = textDecoder.decode(data);
-                const dataArray = dataString.split('"');
-                dataArray.shift();
+                // const textDecoder = new TextDecoder('utf-8');
+                // const dataString = textDecoder.decode(data);
+                // const dataArray = dataString.split('"');
+                // dataArray.shift();
 
                 var responseBERT = document.createElement('div');
                 responseBERT.className = 'response bert';
                 // responseBERT.textContent = data;
-                responseBERT.textContent = dataArray[0];
+                // responseBERT.textContent = dataArray[0];
+                responseBERT.textContent = data["0"];
     
                 var ratingButtons = document.createElement('div');
                 ratingButtons.className = 'rating-buttons';
