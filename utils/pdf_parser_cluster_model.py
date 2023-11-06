@@ -43,6 +43,9 @@ from collections import Counter
 
 # Set global variable for font_size_clusters
 font_size_clusters = None
+heading_count = 0
+subheading_count = 0
+content_count = 0
 
 # Define constants
 TESSERACT_PATH = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
@@ -152,6 +155,8 @@ def initialize_font_clusters(font_data):
 def categorize_text_based_on_clusters(text, metadata, kmeans, font_clusters):
     # Categorize a given text based on its font metadata using a trained k-means clustering model.
 
+    global heading_count, subheading_count, content_count
+
     if not font_clusters:
         raise ValueError("Font clusters are not initialized.")
 
@@ -175,6 +180,13 @@ def categorize_text_based_on_clusters(text, metadata, kmeans, font_clusters):
         (cat for cat, cluster_num in font_clusters.items() if cluster == cluster_num),
         "content",
     )
+
+    if category == "heading":
+        heading_count += 1
+    elif category == "subheading":
+        subheading_count += 1
+    else:
+        content_count += 1
 
     print(f"[DEBUG] Predicted category: {category}")
     return {category: text}
@@ -477,6 +489,10 @@ def main():
         print("[DEBUG] Structuring processed PDF data...")
         # Organize the extracted content in a structured manner for easier consumption
         processed_data = structure_pdf_data(text_per_page)
+
+        print(f"[INFO] Total Headings: {heading_count}")
+        print(f"[INFO] Total Subheadings: {subheading_count}")
+        print(f"[INFO] Total Content Predictions: {content_count}")
 
         print("[DEBUG] Saving processed data to JSON...")
         # Convert the structured data to JSON format and save to disk

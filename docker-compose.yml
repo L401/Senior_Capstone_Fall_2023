@@ -7,11 +7,22 @@ services:
       - ./app:/app
     ports:
       - "5000:5000"
+  
   bert:
     build: ./bert_model
     ports:
       - "5555:5555"
       - "5556:5556"
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            count: 1
+            capabilities: [gpu]
+  
   elasticsearch:
     image: elasticsearch:7.17.9
     ports:
@@ -24,10 +35,12 @@ services:
       memlock:
         soft: -1
         hard: -1
+  
   kibana:
     image: kibana:7.17.9
     ports:
       - '5601:5601'
+      
 volumes:
   es-data:
     driver: local
