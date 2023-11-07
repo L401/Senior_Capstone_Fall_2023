@@ -205,6 +205,7 @@ body {
     width: 90%;
     height: 7%;
     padding: 10px;
+    border: 1px solid #E0E0E0;
 }
 
 .message-input input {
