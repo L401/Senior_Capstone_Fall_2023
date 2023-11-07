@@ -10,7 +10,7 @@ body {
 .navbar {
     margin: 0 auto;
     padding: 20px;
-    border: 1px solid black;
+    border: 1px solid #E0E0E0;
     display: flex;
     flex-direction: row;
     justify-content: left;
@@ -36,11 +36,37 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
+}
+
+.profile-box {
+    display: flex;
+    align-items: center;
+    margin-top: auto;
+    width: 94%;
+    padding: 3%;
+    border: 1px solid #E0E0E0;
+    border-right: none;
+}
+  
+.circle-initial {
+    width: 50px;
+    height: 50px;
+    background-color: #0360AE;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+}
+
+.text-full-name {
+    margin-left: 10px;
+    font-size: 16px;
 }
 
 .new-chat-button {
-    background-color: #0074d9;
+    background-color: #034174;
     color: #fff;
     padding: 10px 79px;
     border: none;
@@ -53,8 +79,9 @@ body {
 
 .chatbot {
     margin-left: auto;
+    background-color: #F0F0F0;
     padding: 20px;
-    border: 1px solid black;
+    border: 1px solid #E0E0E0;
     border-top: none;
     height: 40vw;
     width: 85vw;
@@ -75,9 +102,9 @@ body {
 
 .inquery.user {
     text-align: left;
-    background-color: #0360ae;
+    background-color: #034174;
     color: white;
-    border-radius: 5px;
+    border-radius: 25px 25px 0px 25px;
     padding: 10px;
     margin-bottom: 10px;
     width: 40%;
@@ -87,9 +114,9 @@ body {
 
 .response.bert {
     text-align: left;
-    background-color: #d9d9d9;
+    background-color: #FFFFFF;
     color: black;
-    border-radius: 5px;
+    border-radius: 25px 25px 25px 0px;
     padding: 10px;
     margin-bottom: 10px;
     width: 40%;
@@ -130,13 +157,13 @@ body {
 }
 
 .message-input {
-    background-color: grey;
+    background-color: #FFFFFF;
     border-radius: 20px;
     display: flex;
     flex-direction: row;
     align-items: center;
     width: 80%;
-    height: 15%;
+    height: 7%;
     padding: 10px;
 }
 
@@ -146,13 +173,13 @@ body {
     width: 100%;
     height: 100%;
     font-size: 16px;
-    color: white;
+    color: #474747;
     padding: 0;
     outline: none;
 }
 
 .message-input input::placeholder {
-    color: white;
+    color: #474747;
     opacity: 0.6;
 }
 
