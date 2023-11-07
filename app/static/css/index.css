@@ -158,11 +158,11 @@ body {
 
 .message-input {
     background-color: #FFFFFF;
-    border-radius: 20px;
+    border-radius: 10px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 80%;
+    width: 90%;
     height: 7%;
     padding: 10px;
 }
@@ -184,7 +184,8 @@ body {
 }
 
 .message-input button {
-    color: black;
+    background-color: #034174;
+    color: #FFFFFF;
     border: none;
     padding: 10px;
     border-radius: 5px;
