@@ -119,6 +119,7 @@ def semantic_search():
             "_source": {"includes": ["text"]}
         })
         print("Search executed successfully.")
+        #finds the source document and the text stored along with it and returns the "hit" at each of the hit keys
         return [hit["_source"]["text"] for hit in response["hits"]["hits"]] #returns all the answers
     except Exception as e:
         print("Error executing search:", str(e))
