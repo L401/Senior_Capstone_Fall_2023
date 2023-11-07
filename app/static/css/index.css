@@ -36,7 +36,59 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    width: 15vw;
 }
+
+.new-chat-button {
+    background-color: #034174;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    width: 94%;
+    padding-left: 3%;
+    padding-block: 3%;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.other-chats {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 94%;
+    padding: 3%;
+  }
+
+.chat-group {
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.chat-group-title {
+    align-self: flex-end;
+    color: #797979;
+}
+
+.chat-link {
+    border: none;
+    background-color: #FFFFFF;
+    text-align: left;
+    padding-left: 5px;
+    margin-top: 5px;
+    color: #797979;
+    width: 100%;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.chat-link:hover {
+    background-color: #D9D9D9;
+    text-decoration: underline;
+  }
+  
 
 .profile-box {
     display: flex;
@@ -63,18 +115,6 @@ body {
 .text-full-name {
     margin-left: 10px;
     font-size: 16px;
-}
-
-.new-chat-button {
-    background-color: #034174;
-    color: #fff;
-    padding: 10px 79px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-bottom: 20px;
-    align-self: flex-start;
 }
 
 .chatbot {
