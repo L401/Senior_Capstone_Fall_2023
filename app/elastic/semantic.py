@@ -11,6 +11,7 @@ semantic = Blueprint("semantic", __name__)
 max_retries = 5
 wait_seconds = 5
 
+#retry initializing bert client because it doesnt auto retry and will hang
 for attempt in range(max_retries):
     try:
         # Attempt to connect to the BERT server
@@ -57,6 +58,7 @@ def load_data(filepath):
     with open(filepath, 'r') as file:
         data = json.load(file)
         texts = []
+        #funky custom data scraper from json to pull all dictionary elements listed under "subheader"
         for item in data:
             subheaders = item.get("subheader", {})
             for subheader_title, subheader_content in subheaders.items():
@@ -96,15 +98,17 @@ def index_data(data):
 @semantic.route('/api/elastic_search', methods=["POST"])
 def semantic_search():
     try:
+        #assigns the user_data post request as the query
         data = request.get_json()
         query = data.get("user_input")
         size = data.get("size", 5)
+        #creates embedd for the query
         embedding = bc.encode([query])[0].tolist()
         script_query = {
             "script_score": {
-                "query": {"match_all": {}},
+                "query": {"match_all": {}}, #matches the query against all indexed strings
                 "script": {
-                    "source": "cosineSimilarity(params.query_vector, 'embedding') + 1.0",
+                    "source": "cosineSimilarity(params.query_vector, 'embedding') + 1.0", #assigns and normalizes score between -1 and 1
                     "params": {"query_vector": embedding}
                 }
             }
@@ -115,7 +119,7 @@ def semantic_search():
             "_source": {"includes": ["text"]}
         })
         print("Search executed successfully.")
-        return [hit["_source"]["text"] for hit in response["hits"]["hits"]]
+        return [hit["_source"]["text"] for hit in response["hits"]["hits"]] #returns all the answers
     except Exception as e:
         print("Error executing search:", str(e))
         return jsonify({"error": str(e)})
