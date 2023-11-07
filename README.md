@@ -39,3 +39,13 @@ This allows the PDF Parser to extract the text from the images using OCR technol
 
 Current Status
 Final Version still in production.
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Mockup of Final UI
+
+![image](https://github.com/L401/Senior_Capstone_Fall_2023/assets/64229772/1b88aa66-91f4-4a0e-9156-fc7784c74f0b)
+
+
