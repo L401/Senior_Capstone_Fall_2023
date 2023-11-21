@@ -6,32 +6,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flask Application</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <script src="https://kit.fontawesome.com/d4eb6d76de.js" crossorigin="anonymous"></script>
   </head>
   <body>
     <nav>
         <div class="navbar">
             <img id="lockheed-martin-logo" class="LM-logo" src="{{ url_for('static', filename='images/LM-logo.png')}}">
-            <!-- <button class="nav-button">Section</button>
-            <button class="nav-button">Import</button>
-            <button class="nav-button">Profile</button> -->
+            <a class="upload link" href="{{ url_for('upload') }}">
+                <span class="upload-title">Upload</span>
+                <i class="fa-solid fa-file-arrow-up"></i>
+            </a>
+            <a class="about-us link" href="{{ url_for('about') }}">
+                <span class="upload-title">About Us</span>
+                <i class="fa-regular fa-circle-question"></i>
+            </a>
         </div>
     </nav>
 
     <main class="main">
         <div class="prev-chat">
-            <button class="new-chat-button">New Chat</button>
+            <button class="new-chat-button" onclick="createNewChat()">New Chat</button>
             <div class="other-chats">
                 <div class="chat-group">
-                    <div class="chat-group-title">Group1</div>
-                    <button class="chat-link">chat1</button>
-                    <button class="chat-link">chat2</button>
-                    <button class="chat-link">chat3</button>
+                    <div class="chat-group-title" id="chat-group-today">Today</div>
+                    <a class="chat-link {% if chatbox_id == 1 %}active-chat{% endif %}" href="{{ url_for('chatbox', chatbox_id=1) }}">chat1
+                        <!-- <span class="chat-title">chat1</span>
+                        <i class="fa-regular fa-trash-can"></i> -->
+                    </a>
+                    <a class="chat-link {% if chatbox_id == 2 %}active-chat{% endif %}" href="{{ url_for('chatbox', chatbox_id=2) }}">chat2</a>
+                    <a class="chat-link {% if chatbox_id == 3 %}active-chat{% endif %}" href="{{ url_for('chatbox', chatbox_id=3) }}">chat3</a>
                 </div>
                 <div class="chat-group">
-                    <div class="chat-group-title">Group2</div>
-                    <button class="chat-link">chat4</button>
-                    <button class="chat-link">chat5</button>
-                    <button class="chat-link">chat6</button>
+                    <div class="chat-group-title" id="chat-group-yesterday">Yesterday</div>
+                    <a class="chat-link {% if chatbox_id == 4 %}active-chat{% endif %}" href="{{ url_for('chatbox', chatbox_id=4) }}">chat4</a>
+                    <a class="chat-link {% if chatbox_id == 5 %}active-chat{% endif %}" href="{{ url_for('chatbox', chatbox_id=5) }}">chat5</a>
+                    <a class="chat-link {% if chatbox_id == 6 %}active-chat{% endif %}" href="{{ url_for('chatbox', chatbox_id=6) }}">chat6</a>
                 </div>
             </div>
             <div class="profile-box">
@@ -40,17 +49,24 @@
             </div>
         </div>
         <div class="chatbot">
-            <div class="chat-history" id="chat-history">
-                <!-- Previous chat messages will go here -->
-            </div>
-            <div class="message-input">
-                <input id="user-input" type="text" placeholder="Type your message..." class="input-field">
-                <button onclick="sendMessage()" class="send-button">Send</button>
-            </div>
+            {% block chatbox %}
+            <i class="fa-solid fa-atom fa-10x"></i>
+            {% endblock %}
         </div>
     </main>
 
     <script>
+        function createNewChat() {
+            var chatGroupToday = document.getElementById('chat-group-today');
+
+            var newChatLink = document.createElement('a');
+            newChatLink.className = "chat-link {% if chatbox_id == 7 %}active-chat{% endif %}";
+            newChatLink.href = "{{ url_for('chatbox', chatbox_id=7) }}";
+            newChatLink.textContent = 'chat7';
+
+            chatGroupToday.parentNode.appendChild(newChatLink);
+        }
+
         function sendMessage() {
             var userMessage = document.getElementById('user-input').value;
             if (userMessage.trim() === '') return;

@@ -4,7 +4,6 @@ body {
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
-    height: 100vh;
 }
 
 .navbar {
@@ -14,17 +13,23 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: left;
-    width: 100%;
 }
 
-.navbar button {
-    border: none;
-    background-color: white;
-    text-align: center;
-    display: inline-block;
-    padding: 10px 20px;
-    font-size: 18px;
-    margin: 0 20px;
+.LM-logo {
+    height: 30px;
+}
+
+.link {
+    color: #034174;
+    text-decoration: none;
+    font-size: 24px;
+    padding: 5px;
+    border: 2px solid #034174;
+    border-radius: 5px;
+}
+
+.link:hover {
+    opacity: 0.8;
 }
 
 .main {
@@ -73,22 +78,41 @@ body {
 }
 
 .chat-link {
+    display: block;
     border: none;
     background-color: #FFFFFF;
-    text-align: left;
     padding-left: 5px;
     margin-top: 5px;
     color: #797979;
     width: 100%;
     font-size: 16px;
     cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
 }
 
 .chat-link:hover {
     background-color: #D9D9D9;
     text-decoration: underline;
-  }
-  
+}
+
+.active-chat {
+    background-color: #034174; /* Set your desired background color for the active link */
+    color: white; /* Set your desired text color for the active link */
+}
+
+.active-chat:hover {
+    background-color: #0360AE; /* Set your desired background color for the active link */
+    color: white; /* Set your desired text color for the active link */
+}
+
+.chat-title {
+}
+
+.fa-trash-can {
+    margin-left: auto;
+}
 
 .profile-box {
     display: flex;
@@ -131,6 +155,12 @@ body {
     align-items: center;
 }
 
+.fa-atom {
+    color: #034174;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
 .chat-history {
     overflow-y: auto;
     max-height: 80rem;
@@ -164,23 +194,11 @@ body {
     margin-right: auto;
 }
 
-.good-button {
-    background-color: #4CAF50;
-    color: white;
+.good-button, .bad-button {
     border: none;
     padding: 10px 20px;
     margin-right: 10px;
     cursor: pointer;
-    border-radius: 5px;
-}
-
-.bad-button {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
 }
 
 .good-button:hover, .bad-button:hover {
@@ -233,6 +251,48 @@ body {
     cursor: pointer;
 }
 
-.LM-logo {
-    height: 30px;
+.message-input button:hover {
+    opacity: 0.8;
+}
+
+.upload-box {
+    border: 5px dashed #474747;
+    height: 40vw;
+    width: 80vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.fa-cloud-arrow-up {
+    color: #3d6199e8;
+    margin-top: auto;
+}
+
+.title {
+    color: #3d6199e8;
+}
+
+.sub-title {
+    color: #3d6199e8;
+}
+
+.browse-button {
+    color: #3d6199e8;
+    font-size: 36px;
+    border-radius: 10px;
+    border: 3px solid #3d6199e8;
+    padding: 20px 20px 20px 20px;
+    margin-bottom: auto;
+}
+
+.browse-button:hover {
+    opacity: 0.8;
+}
+
+.about-us-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: auto;
 }

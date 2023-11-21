@@ -1,0 +1,13 @@
+{% extends "index.html" %}
+
+{% block chatbox %}
+<div class="chat-history" id="chat-history">
+    <!-- Previous chat messages will go here -->
+</div>
+<div class="message-input">
+    <input id="user-input" type="text" placeholder="Type your message..." class="input-field">
+    <button onclick="sendMessage()" class="send-button">
+        <i class="fa-solid fa-angles-right fa-2x"></i>
+    </button>
+</div>
+{% endblock %}
