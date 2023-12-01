@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 from elasticsearch import Elasticsearch
 from elastic.semantic import semantic
 from elastic.semantic import semantic_search
@@ -9,8 +9,21 @@ SEARCH_SIZE = 5
 app = Flask(__name__)
 app.register_blueprint(semantic)
 
+users = {"user1": "password1", "user2": "password2"}  #please do not keep it like this, this is just a very rudamentary way to implement it
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if username in users and users[username] == password:
+            return redirect(url_for('home'))
+        else:
+            return "Invalid credentials"
+    return render_template('login.html')
+
 @app.route('/')
-def index():
+def home():
     return render_template('index.html')
 
 @app.route('/chatbox/<int:chatbox_id>')
