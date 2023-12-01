@@ -1,12 +1,14 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 from elasticsearch import Elasticsearch
 from elastic.semantic import semantic
 from elastic.semantic import semantic_search
 import traceback
 
+
 SEARCH_SIZE = 5
 
 app = Flask(__name__)
+app.secret_key = "lockheed"
 app.register_blueprint(semantic)
 
 users = {"user1": "password1", "user2": "password2"}  #please do not keep it like this, this is just a very rudamentary way to implement it
@@ -17,14 +19,18 @@ def login():
         username = request.form['username']
         password = request.form['password']
         if username in users and users[username] == password:
-            return redirect(url_for('home'))
+            session['username'] = username
+            return redirect(url_for('index'))  # Redirect to '/' after successful login
         else:
             return "Invalid credentials"
     return render_template('login.html')
 
 @app.route('/')
-def home():
-    return render_template('index.html')
+def index():
+    if 'username' in session:
+        return render_template('index.html')
+    else:   
+        return redirect(url_for('login'))
 
 @app.route('/chatbox/<int:chatbox_id>')
 def chatbox(chatbox_id):
@@ -37,6 +43,11 @@ def about():
 @app.route('/upload')
 def upload():
     return render_template('upload.html')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
 
 if __name__ == "__main__":
     try:

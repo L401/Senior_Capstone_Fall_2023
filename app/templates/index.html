@@ -20,6 +20,10 @@
                 <span class="upload-title">About Us</span>
                 <i class="fa-regular fa-circle-question"></i>
             </a>
+            <a class="logout link" href="{{ url_for('logout') }}">
+                <span class="logout-title">Logout</span>
+                <i class="fa-solid fa-sign-out"></i>
+            </a>
         </div>
     </nav>
 
@@ -45,7 +49,7 @@
             </div>
             <div class="profile-box">
                 <div class="circle-initial">CC</div>
-                <div class="text-full-name">Caleb Canales</div>
+                <div class="text-full-name">{{ session['username'] }}</div>
             </div>
         </div>
         <div class="chatbot">
@@ -130,4 +134,3 @@
     </script>
 </body>
 </html>
-
