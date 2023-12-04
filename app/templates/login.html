@@ -1,20 +1,28 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+        <script src="https://kit.fontawesome.com/d4eb6d76de.js" crossorigin="anonymous"></script>
+    </head>
 <body>
 
-<h2>Login</h2>
 
 <form action="/login" method="post">
-  <div class="container">
-    <label for="username"><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" name="username" required>
+    <div class="content-box">
+        <img id="lockheed-martin-logo" class="LM-logo" src="{{ url_for('static', filename='images/LM-logo.png')}}">
+        <label for="username"><b>Username</b></label>
+        <input type="text" placeholder="Enter Username" name="username" required>
 
-    <label for="password"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="password" required>
+        <label for="password"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="password" required>
 
-    <button type="submit">Login</button>
-  </div>
+        <button type="submit">Login</button>
+    </div>
 </form>
+
 
 </body>
 </html>
