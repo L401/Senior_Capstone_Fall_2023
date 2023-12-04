@@ -22,7 +22,7 @@ def login():
             session['username'] = username
             return redirect(url_for('index'))  # Redirect to '/' after successful login
         else:
-            return "Invalid credentials"
+            return render_template('login.html', error_message="Invalid credentials")
     return render_template('login.html')
 
 @app.route('/')
