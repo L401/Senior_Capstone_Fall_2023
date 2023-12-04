@@ -44,12 +44,18 @@ from collections import defaultdict
 
 # Define constants
 TESSERACT_PATH = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-PDF_PATH = "./data/AFD-180201-00-5-3.pdf"
+PDF_PATH = "./app/data/AFD-180201-00-5-3.pdf"
 
 # Initialize script
 print("[INFO] Initializing...")
 print(f"[INFO] Using Tesseract at {TESSERACT_PATH}")
 print(f"[INFO] Processing PDF from {PDF_PATH}")
+
+file_path = PDF_PATH
+if os.path.isfile(file_path):
+    print("File exists.")
+else:
+    print("File does not exist.")
 
 
 # Set Tesseract command and open PDF with pdfplumber
@@ -59,7 +65,7 @@ def initialize_pdf(PDF_PATH):
 
 
 # Clear the content of the extracted data file
-with open(r"./data/extracted_data.txt", "w") as file:
+with open(r"./app/data/extracted_data.txt", "w") as file:
     pass
 
 
@@ -67,6 +73,31 @@ def normalize_fontname(fontname):
     if fontname == "Times-Italic":
         return "Times-Roman"
     return fontname
+
+
+def replace_ligatures(text):
+    replacements = {
+        "\ufb01": "fi",
+        "\ufb02": "fl",
+        "\u2013": "-",
+        "\u2019": "'",
+        "\u2022": "*",
+        "\u00ae": "(R)",
+        "\u2014": "--",
+        "\u2122": "(TM)",
+        "\u2018": "'",
+        "\u201c": '"',
+        "\u201d": '"',
+        "\ufb00": "ff",
+        "\ufb03": "ffi",
+        "\ufb04": "ffl",
+        "\u2010": "-",
+        "\u2011": "-",
+        # Add other ligatures and their replacements here if needed
+    }
+    for ligature, replacement in replacements.items():
+        text = text.replace(ligature, replacement)
+    return text
 
 
 def extract_text(element):
@@ -80,7 +111,10 @@ def extract_text(element):
 
     for text_line in element:
         if isinstance(text_line, LTTextContainer):
-            words = text_line.get_text().split()
+            # Apply ligature replacement to the line of text
+            processed_text_line = replace_ligatures(text_line.get_text())
+
+            words = processed_text_line.split()
             word_index = 0
             for character in text_line:
                 if isinstance(character, LTChar):
@@ -122,7 +156,7 @@ def extract_text(element):
         else:  # It's a subheader with no associated content
             subheaders_and_contents[current_text.strip()] = ""
 
-    with open(r"./data/extracted_data.txt", "a", encoding="utf-8") as file:
+    with open(r"./app/data/extracted_data.txt", "a", encoding="utf-8") as file:
         file.write(f"\nWord Formats: {word_formats}\n")
         for subheader, content in subheaders_and_contents.items():
             file.write(f"Subheading: {subheader}\nContent: {content}\n")
@@ -312,7 +346,7 @@ def structure_pdf_data(text_per_page):
 
 
 # Save structured data to a JSON file
-def save_data_to_json(data, path="./data/extracted_data.json"):
+def save_data_to_json(data, path="./app/data/extracted_data.json"):
     print(f"[INFO] Saving extracted data to JSON file")
     with open(path, "w") as f:
         json.dump(data, f, indent=4)
