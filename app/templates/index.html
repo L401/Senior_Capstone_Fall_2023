@@ -101,15 +101,20 @@
                 ratingButtons.className = 'rating-buttons';
     
                 var goodButton = document.createElement('button');
-                goodButton.textContent = 'Good';
                 goodButton.className = 'good-button';
+                var iconElement = document.createElement('i');
+                iconElement.className = 'fa-regular fa-thumbs-up fa-2x';
+                goodButton.appendChild(iconElement);
                 goodButton.onclick = function () {
                     console.log('good');
                 };
     
                 var badButton = document.createElement('button');
-                badButton.textContent = 'Bad';
                 badButton.className = 'bad-button';
+                var iconElement = document.createElement('i');
+                iconElement.className = 'fa-regular fa-thumbs-up fa-2x fa-flip-vertical';
+                badButton.appendChild(iconElement);
+                
                 badButton.onclick = function () {
                     dataIndex++;
                     if (data[dataIndex]) {
