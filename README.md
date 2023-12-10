@@ -14,6 +14,20 @@ Running the application with Docker:
 docker compose up --build
 ```
 
+---TEMP FIX---
+after the containers are build do
+```
+docker compose down app
+docker compose up app
+```
+as app relies on bert to be fully initialized before working
+
+After this navigate to 
+```
+localhost:5000
+```
+in your web browser and login with a username set within app.py
+
 PDF PARSER:
 
 Install Python Dependencies:
